@@ -20,12 +20,12 @@ const userSchema = new Schema({
     required: true,
     minlength: 5,
   },
-  // teams: [
-  //   {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Team',
-  //   },
-  // ],
+  teams: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Team',
+    },
+  ],
 });
 
 // set up pre-save middleware to create password
