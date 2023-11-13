@@ -1,27 +1,37 @@
 // typeDefs.js file
 const typeDefs = `
     type User {
-     _id: ID
-     username: String
-     email: String
-     password: String
+        _id: ID
+        username: String
+        email: String
+        password: String
+        teams: [Team]!
     }
 
-    type Query {
-     users: [User]
-     user(username: String!): User
+    type Team {
+        _id: ID
+        name: String
+        country: String
+        coach: String
     }
     
+    type Query {
+        users: [User]
+        user(username: String!): User
+    }
+
     type Auth {
-     token: ID!
-     user: User
+        token: ID!
+        user: User
     }
 
     type Mutation {
-     addUser(username: String!, email: String!, password: String!): Auth
-     login(email: String!, password: String!): Auth
-  }
+        addUser(username: String!, email: String!, password: String!): Auth
+        login(email: String!, password: String!): Auth
+        addTeam(userId: ID!, teamId: ID!): User
+        removeTeam(userId: ID!, teamId: ID!): User
+    }
 `;
+//players: [Player]
 
-//teams: [Team]!
 module.exports = typeDefs;
