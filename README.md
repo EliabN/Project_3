@@ -1,156 +1,95 @@
-# 23 Final Project: MERN Stack Single-Page Application
+# **ScoreSphere** : MERN Stack Application
 
-Projects have played a key role in your journey to becoming a full-stack web developer. As you apply for development jobs, your portfolio is absolutely vital to opening doors to opportunities. Your portfolio showcases high-quality deployed examples of your work, and you can use your finished projects for that very purpose.
+`ScoreSphere` is an all-in-one `football application designed to provide comprehensive coverage of everything related to the world of football`. Whether you're an just a fan, a `fantasy league enthusiast`, or someone seeking the latest scores and insights, ScoreSphere offers a centralized platform for all things football.
 
-This project is a fantastic opportunity to show employers your collaborative skills and coding abilities, especially in the context of a scalable, user-focused MERN app. Remember that employers want to see what you can do, but they also want to see how you work with other developers. The more examples of deployed collaborative work you have in your portfolio, the more likely you are to get an interview and a job.
+## Why
 
-## Project Requirements
+In recent years there have been many news/social media application providing users with information based on there interest at a click of button or on the user's feed. ScoreSphere is an application that does just that and to be more specific, information regard football the world sport.  
 
-Your group will use everything you’ve learned throughout this course to create a MERN stack single-page application that works with real-world data to solve a real-world challenge, with a focus on data and user demand. This project will provide you with the best opportunity to demonstrate your problem-solving skills, which employers will want to see during interviews. Once again, the user story and acceptance criteria will depend on the project that you create, but your project must fulfill the following requirements:
+## User Story
 
-* Use React for the front end.
 
-* Use GraphQL with a Node.js and Express.js server.
+```md
+As a Guest User with great interest in the football without needing to log in.
+I WANT to visit the application's landing page to get an overview of the football app
+I WANT to view a list of popular football teams, and basic information 
+I WANT to see upcoming match schedules, match results
+SO THAT I can have the latest information of teams/player of the world game
+```
 
-* Use MongoDB and the Mongoose ODM for the database.
 
-* Use queries and mutations for retrieving, adding, updating, and deleting data.
+```md
+AS a Registered User with unmatched interest in the world's favorite sport
+I WANT to be able to create an account or log in using my credentials.
+I WANT to view a list of popular football teams, and basic information
+I WANT to view a personalized dashboard that shows my favorite teams, upcoming matches, and recent activities.
+I WANT to search and mark certain teams or players as favorites
+`I WANT to buy tickets for upcoming matches through the application.`
+`I WANT to participate in fantasy leagues leagues with friends by selecting players to manage my team.`
+`I WANT to engage in discussions, forums, or comment sections related to teams, matches, or players.`
+SO THAT I can support my favorite teams/players through the toughest loses and greatest triumphs
 
-* Be deployed using Heroku (with data).
+`Bonus`
 
-* Have a polished UI.
+## Table of Contents
 
-* Be responsive.
+- [Preview](#preview)
+- [Features](#features)
+- [Installation](#installation)
+- [Testing](#testing)
+- [Associations](#associations)
+- [License](#license)
+- [Contribute](#contribute)
+- [Collaboration](#collaboration)
+- [Resources](#resources)
 
-* Be interactive (i.e., accept and respond to user input).
 
-* Include authentication (JWT).
 
-* Protect sensitive API key information on the server.
+## Preview 
+Click on image below to visit page || or CLICK [here](https://) to view page
 
-* Have a clean repository that meets quality coding standards (file structure, naming conventions, best practices for class and id naming conventions, indentation, high-quality comments, etc.).
+[![A image thumbnail shows the application in heroku](./assets/images/)](https://)
 
-* Have a high-quality README (with unique name, description, technologies used, screenshot, and link to deployed application).
+## Features
 
-### CSS Styling
+`CREATE user account`
 
-Instead of using a CSS library like Bootstrap, consider one of the following suggestions:
+`LOGIN to Account`
 
-* Look into the concept of CSS-in-JS, which abstracts CSS to the component level, using JavaScript to describe styles in a declarative and maintainable way. Some popular libraries include [styled-components](https://styled-components.com/) and [Emotion](https://emotion.sh/docs/introduction).
+`VIEW teams and there information`
 
-* Try using a component library, such as [Semantic UI](https://semantic-ui.com/), [Chakra UI](https://chakra-ui.com/), or [Ant Design](https://ant.design/).
+`VIEW updates on favorite teams and players`
 
-* Create all the CSS for your application just using CSS.
+`ADD teams/player to favorite`
 
-Ultimately, it doesn't matter which of these options you choose&mdash;it just needs to look professional and be mobile-friendly.
+`REMOVE teams/player from favorite`
 
-### Payment Platform
+## Installation
 
-Consider integrating the Stripe payment platform. Even if you don’t create an e-commerce application, you could set up your site to accept charitable donations.
+TBC
 
-### Bonus
+## Testing
 
-Although this is not a requirement for your project, see if you can also implement functionality to meet the minimum requirements of a PWA:
+> **Important**: `GraphQL Playground` was for testing the application's GET routes some models
 
-* Uses a web manifest
+### Associations
 
-* Uses a service worker for offline functionality
+* `Model structure TBC`
 
-* Is installable
+### Associations
 
-## Presentation Requirements
+* `Model relationship TBC`
 
-Use this [project presentation template](https://docs.google.com/presentation/d/10QaO9KH8HtUXj__81ve0SZcpO5DbMbqqQr4iPpbwKks/edit?usp=sharing) to address the following:
+## License
 
-* Elevator pitch: a one minute description of your application
+This project license is under the [MIT](https://opensource.org/licenses/MIT)
 
-* Concept: What is your user story? What was your motivation for development?
+## Contribute
 
-* Process: What were the technologies used? How were tasks and roles broken down and assigned? What challenges did you encounter? What were your successes?
+Git fork. Pull request
 
-* Demo: Show your stuff!
+## Resources
 
-* Directions for Future Development
+* [GraphQL Playground](https://tray.io/documentation/embedded/embedded-apis/playground-intro/)
 
-* Links to the deployed application and the GitHub repository. Use the [Guide to Deploy with Heroku and MongoDB Atlas](https://coding-boot-camp.github.io/full-stack/mongodb/deploy-with-heroku-and-mongodb-atlas) on The Full-Stack Blog if you need a reminder on how to deploy to Heroku.
-
-## Grading Requirements
-
-This project is graded based on the following criteria:
-
-### Technical Acceptance Criteria: 25%
-
-* Satisfies the following code requirements:
-
-  * Application uses React for the front end.
-
-  * Application has a GraphQL API with a Node.js and Express.js server, and uses queries and mutations for retrieving, adding, updating, and deleting data.
-
-  * Application uses MongoDB and the Mongoose ODM for the database and protects sensitive API key information on the server.
-
-  * Application includes user authentication using JWT.
-
-### Concept 10%
-
-* Application should be a unique and novel idea.
-
-* Your group should clearly and concisely articulate your project idea.
-
-### Deployment: 20%
-
-* Application deployed at live URL on Heroku and loads with no errors.
-
-* Application GitHub URL submitted.
-
-### Repository Quality: 10%
-
-* Repository has a unique name.
-
-* Repository follows best practices for file structure and naming conventions.
-
-* Repository follows best practices for class and id naming conventions, indentation, quality comments, etc.
-
-* Repository contains multiple descriptive commit messages.
-
-* Repository contains a high-quality README file with description, screenshot, and link to deployed application.
-
-### Application Quality: 15%
-
-* Application user experience is intuitive and easy to navigate.
-
-* Application user interface style is clean and polished.
-
-* Application is responsive.
-
-### Presentation 10%
-
-* Your group should present using a slide deck.
-
-* Every group member should speak during the presentation.
-
-* Your presentation should follow the [Project Presentation Template](https://docs.google.com/presentation/d/10QaO9KH8HtUXj__81ve0SZcpO5DbMbqqQr4iPpbwKks/edit?usp=sharing).
-
-### Collaboration 10%
-
-* There are no major disparities in the number of GitHub contributions between group members.
-
-### Bonus
-
-Fulfilling all three of the following requirements to turn your app into a PWA will add 10 points to your grade. Note that the highest grade you can achieve is still a 100:
-
-* Uses a web manifest
-
-* Uses a service worker for offline functionality
-
-* Is installable
-
-## How to Submit Your MERN Stack Single-Page Application
-
-**Each member of your group** is required to submit the following for review:
-
-* The URL of the deployed application.
-
-* The URL of the GitHub repository, with a unique name and a README describing the project.
-
----
-© 2023 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
+* [Configuring Vite](https://vitejs.dev/config/)
