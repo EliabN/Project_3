@@ -5,12 +5,10 @@ const { signToken, AuthenticationError } = require('../utils/auth');
 const resolvers = {
     Query: {
         users: async () => {
-            return User.find()
-            //.populate('thoughts');
+            return User.find().populate('teams');
         },
         user: async (parent, { username }) => {
-            return User.findOne({ username })
-            //.populate('thoughts');
+            return User.findOne({ username }).populate('teams');
         }
     },
 
@@ -46,35 +44,34 @@ const resolvers = {
             // Return an `Auth` with signed token and user's info
             return { token, user };
         },
-
         addTeam: async (_, { userId, teamId }) => {
             try {
-                const user = await User.findById(userId);
-                const team = await Team.findById(teamId);
-
-                if (!user || !team) {
-                    throw new Error('User or Team not found');
-                }
-
-                user.teams.push(team);
-                await user.save();
-
-                return user;
+              const user = await User.findOneAndUpdate(
+                { _id: userId },
+                { $addToSet: { teams: teamId } },
+                { new: true }
+              ).populate('teams');
+          
+              if (!user) {
+                throw new Error('User not found');
+              }
+          
+              return user;
             } catch (error) {
-                throw new Error(`Failed to add team: ${error.message}`);
+              throw new Error(`Failed to add team: ${error.message}`);
             }
-        },
-        removeTeam: async (_, { userId, teamId }) => {
+          },
+        removeTeam: async (parent, { userId, teamId }) => {
             try {
-                const user = await User.findById(userId);
+                const user = await User.findOneAndUpdate(
+                    { _id: userId },
+                    { $pull: { teams: teamId } },
+                    { new: true }
+                );
 
                 if (!user) {
                     throw new Error('User not found');
                 }
-
-                // Remove the team from the user's teams array
-                user.teams = user.teams.filter(team => team.toString() !== teamId);
-                await user.save();
 
                 return user;
             } catch (error) {

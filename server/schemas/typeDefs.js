@@ -10,8 +10,8 @@ const typeDefs = `
 
     type Team {
         _id: ID
-        name: String
-        country: String
+        name: String!
+        league: String!
         coach: String
     }
     
