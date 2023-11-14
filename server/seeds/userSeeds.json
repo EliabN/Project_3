@@ -1,0 +1,28 @@
+[
+  {
+    "username": "Ben",
+    "email": "ben@testmail.com",
+    "password": "Ben12345",
+    "teams": [
+      {
+        "name": "Team A",
+        "league": "League A"
+      },
+      {
+        "name": "Team B",
+        "league": "League B"
+      }
+    ]
+  },
+  {
+    "username": "User",
+    "email": "user@gmail.com",
+    "password": "pass123",
+    "teams": [
+      {
+        "name": "Team C",
+        "league": "League C"
+      }
+    ]
+  }
+]
