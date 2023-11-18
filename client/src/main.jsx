@@ -14,24 +14,26 @@ const router = createBrowserRouter([
   {
     path: '/',
     // App component as the root element
-    element: <App />, 
+    element: <App />,
     // Displayed in case of routing errors
-    errorElement: <NotFound />, 
+    errorElement: <NotFound />,
     children: [
       {
         // Rendered for the root path '/'
-        index: true, 
+        index: true,
         // Home component rendered as root path
-        element: <Home /> 
-      }, {
-        // Route for team details with ':id'
-        path: '/team/:id', 
-        // Team component rendered for team details
-        element: <Team /> 
-      }, {
-        path: '/fixtures/:id', 
-        element: <Fixtures /> 
+        element: <Home />
       },
+      {
+        // Route for team details with ':id'
+        path: '/team/:id',
+        // Team component rendered for team details
+        element: <Team />
+      },
+      // {
+      //   path: '/fixtures/:id', 
+      //   element: <Fixtures /> 
+      // },
     ],
   },
 ]);

@@ -17,7 +17,7 @@ export const QUERY_USER = gql`
   }
 `;
 
-export const QUERY_TEAM = gql`
+export const QUERY_TEAMS = gql`
   query getTeam {
     teams {
       _id
