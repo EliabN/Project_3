@@ -27,3 +27,14 @@ export const QUERY_TEAM = gql`
     }
   }
 `;
+
+export const QUERY_SINGLE_TEAM = gql`
+  query getSingleTeam($teamId: ID!) {
+    team(teamId: $teamId) {
+      _id
+      name
+      league
+      coach 
+    }
+  }
+`;
