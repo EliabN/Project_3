@@ -1,4 +1,4 @@
-// Import necessary modules from React and the routing library
+// Import modules from React and the routing library
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
