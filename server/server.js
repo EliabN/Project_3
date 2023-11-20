@@ -16,6 +16,12 @@ const server = new ApolloServer({
 
 const app = express();
 
+// app.get('/api/words', (req, res) => {
+//   const word = req.query.word.toLowerCase();
+//   // fetch word with library of your choice using secret API from .env
+//   .then(data => res.send(data));
+// });
+
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
   await server.start();

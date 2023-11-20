@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-
+import largeLogo from '../../assets/images/scoresphere-logo.png';
 import Auth from '../../utils/auth';
 
 const Header = () => {
@@ -12,9 +12,8 @@ const Header = () => {
       <div className="container flex-row justify-space-between-lg justify-center align-center">
         <div>
           <Link className="text-light" to="/">
-            <h1 className="m-0">Tech Thoughts</h1>
+          <img src={largeLogo} alt="largeLogo" style={{ width: '345px', height: '95px' }} />
           </Link>
-          <p className="m-0">Get into the mind of a programmer.</p>
         </div>
         <div>
           {Auth.loggedIn() ? (

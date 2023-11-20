@@ -19,34 +19,7 @@ const resolvers = {
             return Team.findOne({ _id: teamId });
         },
         fetchTeam: async (_, __, context) => {
-            try {
-                const headers = context.user ? { Authorization: `Bearer ${context.user.token}` } : {};
 
-                // Add the required headers for the football API
-                headers["x-rapidapi-host:v3.football.api-sports.io"] ;
-                headers["x-rapidapi-key"] = myApiKey
-
-                // Make the API request without enforcing authentication
-                const footballApiResponse = await axios.get('https://v3.football.api-sports.io/teams?id=33');
-
-                // Process the data if needed
-                const processedData = {
-                    team: footballApiResponse.data.response.map(item => ({
-                        _id: item.team.id,
-                        name: item.team.name,
-                        league: item.team.country,
-                        venue: item.venue.venue,
-                        // Add other fields as needed
-                    })),
-                };
-
-                console.log(footballApiResponse);
-
-                return processedData;
-            } catch (error) {
-                // Handle API call errors
-                throw new Error(`Failed to fetch football data: ${error.message}`);
-            }
         },
     },
     Mutation: {

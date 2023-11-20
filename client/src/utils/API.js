@@ -1,12 +1,16 @@
 // API.js file
 // Import API key
 //import { myApiKey } from '../../../server/utils/auth/';
+import dotenv from 'dotenv';
+dotenv.config();
 
-fetch("https://v3.football.api-sports.io/teams?id=33", {
+const apiKey = import.meta.env.VITE_API_KEY;
+console.log(apiKey)
+fetch("https://v3.football.api-sports.io/standings?league=39&season=2019", {
   method: "GET",
   headers: {
     "x-rapidapi-host": "v3.football.api-sports.io",
-    "x-rapidapi-key": "a2007e10bdcd4f227088177295d996ea",
+    "x-rapidapi-key":'apiKey', // Use the apiKey variable here
   },
 })
   .then(response => response.json())

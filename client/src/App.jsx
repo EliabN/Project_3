@@ -1,30 +1,53 @@
-// Import the main styling for the app
 import './App.css';
-// Import Outlet to render nested routes
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import { Outlet } from 'react-router-dom';
-// Import components from Apollo Client fir GraphQL
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
-// Apollo Client instance with GraphQL URI and cache
+import Header from './components/Header';
+import Footer from './components/Footer';
+
+// Construct our main GraphQL API endpoint
+const httpLink = createHttpLink({
+  uri: '/graphql',
+});
+
+// Construct request middleware that will attach the JWT token to every request as an `authorization` header
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('id_token');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
 const client = new ApolloClient({
-  // GraphQL server is served at '/graphql' endpoint
-  uri: '/graphql', 
+  // Set up our client to execute the `authLink` middleware prior to making the request to our GraphQL API
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
-// Define the main App component
 function App() {
-  // Wrap App with ApolloProvider for GraphQL functions
   return (
     <ApolloProvider client={client}>
-      {/* Main container div with flex layout */}
-      <div className="flex-column justify-center align-center min-100-vh bg-primary">
-        {/* Render the nested routes defined in your routing setup */}
-        <Outlet />
+      <div className="flex-column justify-flex-start min-100-vh">
+        <Header />
+        <div className="container">
+          <Outlet />
+        </div>
+        <Footer />
       </div>
     </ApolloProvider>
   );
 }
 
-// Export App
 export default App;
+
