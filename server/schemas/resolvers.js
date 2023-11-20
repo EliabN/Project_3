@@ -1,7 +1,8 @@
 // resolvers.js file
-const { User } = require('../models');
-const { signToken, AuthenticationError } = require('../utils/auth');
-
+const { User, Team } = require('../models');
+const { signToken, AuthenticationError, myApiKey } = require('../utils/auth');
+// Import axios module
+const axios = require('axios');
 const resolvers = {
     Query: {
         users: async () => {
@@ -9,9 +10,45 @@ const resolvers = {
         },
         user: async (parent, { username }) => {
             return User.findOne({ username }).populate('teams');
-        }
-    },
+        },
+        teams: async (parent, { username }) => {
+            const params = username ? { username } : {};
+            return Team.find(params).sort({ createdAt: -1 });
+        },
+        team: async (parent, { teamId }) => {
+            return Team.findOne({ _id: teamId });
+        },
+        fetchTeam: async (_, __, context) => {
+            try {
+                const headers = context.user ? { Authorization: `Bearer ${context.user.token}` } : {};
 
+                // Add the required headers for the football API
+                headers["x-rapidapi-host:v3.football.api-sports.io"] ;
+                headers["x-rapidapi-key"] = myApiKey
+
+                // Make the API request without enforcing authentication
+                const footballApiResponse = await axios.get('https://v3.football.api-sports.io/teams?id=33');
+
+                // Process the data if needed
+                const processedData = {
+                    team: footballApiResponse.data.response.map(item => ({
+                        _id: item.team.id,
+                        name: item.team.name,
+                        league: item.team.country,
+                        venue: item.venue.venue,
+                        // Add other fields as needed
+                    })),
+                };
+
+                console.log(footballApiResponse);
+
+                return processedData;
+            } catch (error) {
+                // Handle API call errors
+                throw new Error(`Failed to fetch football data: ${error.message}`);
+            }
+        },
+    },
     Mutation: {
         addUser: async (parent, { username, email, password }) => {
             // Create the user
@@ -46,21 +83,21 @@ const resolvers = {
         },
         addTeam: async (_, { userId, teamId }) => {
             try {
-              const user = await User.findOneAndUpdate(
-                { _id: userId },
-                { $addToSet: { teams: teamId } },
-                { new: true }
-              ).populate('teams');
-          
-              if (!user) {
-                throw new Error('User not found');
-              }
-          
-              return user;
+                const user = await User.findOneAndUpdate(
+                    { _id: userId },
+                    { $addToSet: { teams: teamId } },
+                    { new: true }
+                ).populate('teams');
+
+                if (!user) {
+                    throw new Error('User not found');
+                }
+
+                return user;
             } catch (error) {
-              throw new Error(`Failed to add team: ${error.message}`);
+                throw new Error(`Failed to add team: ${error.message}`);
             }
-          },
+        },
         removeTeam: async (parent, { userId, teamId }) => {
             try {
                 const user = await User.findOneAndUpdate(

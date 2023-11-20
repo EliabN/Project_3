@@ -12,12 +12,19 @@ const typeDefs = `
         _id: ID
         name: String!
         league: String!
-        coach: String
+        venue: String
     }
-    
+
+    type FetchTeam {
+        team: Team
+      }
+
     type Query {
         users: [User]
         user(username: String!): User
+        teams(username: String): [Team]
+        team(teamId: ID!): Team
+        fetchTeam: FetchTeam
     }
 
     type Auth {
@@ -32,6 +39,5 @@ const typeDefs = `
         removeTeam(userId: ID!, teamId: ID!): User
     }
 `;
-//players: [Player]
 
 module.exports = typeDefs;

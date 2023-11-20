@@ -13,7 +13,7 @@ const teamSchema = new Schema({
     required: true,
     trim: true,
   },
-  coach: {
+  venue: {
     type: String,
     trim: true,
   },

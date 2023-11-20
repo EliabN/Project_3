@@ -1,5 +1,7 @@
 // auth.js
 const { GraphQLError } = require('graphql');
+require('dotenv').config();
+const myApiKey = process.env.API_KEY
 
 // Import 'jsonwebtoken' for (JWT)JSON Web Tokens 
 const jwt = require('jsonwebtoken');
@@ -27,4 +29,7 @@ module.exports = {
     // Sign JWT with payload, secret key, and expiration
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   },
+
+  // API key
+  myApiKey: myApiKey
 };

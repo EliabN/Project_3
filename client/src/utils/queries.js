@@ -11,7 +11,7 @@ export const QUERY_USER = gql`
         _id
         name
         league
-        coach
+        venue
       }
     }
   }
@@ -23,7 +23,7 @@ export const QUERY_TEAMS = gql`
       _id
       name
       league
-      coach    
+      venue    
     }
   }
 `;
@@ -34,7 +34,7 @@ export const QUERY_SINGLE_TEAM = gql`
       _id
       name
       league
-      coach 
+      venue 
     }
   }
 `;
