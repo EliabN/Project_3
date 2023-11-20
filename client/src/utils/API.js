@@ -1,11 +1,17 @@
 // API.js file
 // Import API key
-//import { myApiKey } from '../../../server/utils/auth/';
-import dotenv from 'dotenv';
-dotenv.config();
 
-const apiKey = import.meta.env.VITE_API_KEY;
-console.log(apiKey)
+// import { myApiKey } from '../../oSecrets';
+// import dotenv from 'dotenv';
+// dotenv.config();
+
+import { API_KEY } from '../../oSecrets';
+
+// Now you can use API_KEY in this file
+console.log(API_KEY);
+
+//const apiKey = import.meta.env.VITE_API_KEY;
+// console.log(apiKey)
 fetch("https://v3.football.api-sports.io/standings?league=39&season=2019", {
   method: "GET",
   headers: {

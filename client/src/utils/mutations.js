@@ -56,3 +56,22 @@ export const REMOVE_TEAM = gql`
     }
   }
 `;
+
+export const ADD_TRANSFER_COMMENT = gql`
+  mutation addTransferComment($transferId: ID!, $commentText: String!, $commentAuthor: String!) {
+    addTransferComment(transferId: $transferId, commentText: $commentText, commentAuthor: $commentAuthor) {
+      _id
+      text
+      author
+      createdAt
+    }
+  }
+`;
+
+export const DELETE_COMMENT = gql`
+  mutation deleteComment($commentId: ID!) {
+    deleteComment(commentId: $commentId) {
+      _id
+    }
+  }
+`;

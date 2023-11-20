@@ -17,10 +17,6 @@ const teamSchema = new Schema({
     type: String,
     trim: true,
   },
-  trophies: {
-    type: Number,
-    default: 0,
-  },
 //   players: [
 //     {
 //       type: Schema.Types.ObjectId,

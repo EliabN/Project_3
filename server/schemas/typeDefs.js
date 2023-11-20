@@ -15,8 +15,36 @@ const typeDefs = `
         venue: String
     }
 
-    type FetchTeam {
-        team: Team
+    type Transfer {
+        _id: ID!
+        player: Player!
+        update: String!
+        transfers: [TransferDetail!]!
+        comments: [Comment!]!
+      }
+      
+      type TransferDetail {
+        date: String!
+        type: String!
+        teams: TransferTeams!
+      }
+      
+      type TransferTeams {
+        in: Team!
+        out: Team!
+      }
+      
+      type Team {
+        id: ID!
+        name: String!
+        logo: String!
+      }
+      
+      type Comment {
+        _id: ID!
+        text: String!
+        author: String!
+        createdAt: String!
       }
 
     type Query {
@@ -24,7 +52,7 @@ const typeDefs = `
         user(username: String!): User
         teams(username: String): [Team]
         team(teamId: ID!): Team
-        fetchTeam: FetchTeam
+        transfers(teamId: ID!): [Transfer!]!
     }
 
     type Auth {
@@ -37,6 +65,8 @@ const typeDefs = `
         login(email: String!, password: String!): Auth
         addTeam(userId: ID!, teamId: ID!): User
         removeTeam(userId: ID!, teamId: ID!): User
+        addTransferComment(transferId: ID!, commentText: String!, commentAuthor: String!): Comment!
+        deleteComment(commentId: ID!): Comment!
     }
 `;
 

@@ -3,7 +3,11 @@
 import { useQuery } from '@apollo/client';
 import { useState, useEffect } from 'react';
 import TeamList from '../components/TeamList';
-import Fixture from './Fixture';
+import Fixtures from '../components/Fixtures';
+//import { API_KEY } from './secrets';
+
+// Now you can use API_KEY in this file
+//console.log(API_KEY);
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -15,7 +19,7 @@ const Home = () => {
           method: "GET",
           headers: {
             "x-rapidapi-host": "v3.football.api-sports.io",
-            "x-rapidapi-key": "37d1232ff7a559103a48f9a21b2bd7",
+            "x-rapidapi-key": "93db411c7f7e2e844090f2a",
           },
         });
 
@@ -36,22 +40,30 @@ const Home = () => {
   const [fixtures, setFixtures] = useState([]);
 
   useEffect(() => {
-    const fetchRounds = async (leagueId, season) => {
+    const leagueId = 61;
+    const season = 2019;
+
+    const fetchRounds = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/fixtures/rounds?league=${leagueId}&season=${season}&current=true`, {
+        const response = await fetch(`https://v3.football.api-sports.io/fixtures?live=all`, {
           headers: {
-            'x-rapidapi-host': 'v3.football.api-sports.io', // Replace with your RapidAPI host
-            'x-rapidapi-key': '93db411c7f7e2e844090f2a5ea7d7474',
+            'x-rapidapi-host': 'v3.football.api-sports.io',
+            'x-rapidapi-key': '93db411c7f7e2e844090f2a5ea7d=',
           },
         });
-    
-        const data = await response.json();
-        return data.response || [];
+
+        const result = await response.json();
+        console.log(result.response);
+
+        if (result.response && result.response.length > 0) {
+          setFixtures(result.response);
+        }
       } catch (error) {
-        console.error('Error fetching rounds:', error);
-        return [];
+        console.error(error);
       }
     };
+
+    fetchRounds();
   }, []);
 
   return (
@@ -94,9 +106,13 @@ const Home = () => {
                     <span>NO MATCHES yesterday</span>
                   </div>
                   <div className="app-container">
-                    {fixtures.map(fixture => (
-                      <Fixture key={fixture.fixture.id} fixture={fixture} />
-                    ))}
+                    {fixtures.length > 0 ? (
+                      fixtures.map((fixture) => (
+                        <Fixtures key={fixture.fixture.id} fixture={fixture} />
+                      ))
+                    ) : (
+                      <h3>No Fixtures Yet</h3>
+                    )}
                   </div>
                   <div>
                     <button
@@ -120,7 +136,7 @@ const Home = () => {
         <div className="col-md-4">
           <div className="card bg-light-green">
             <div className="card-body">
-              {/* Your existing right side content */}
+              {/* Right side content */}
               <div className="flex-row justify-left w-100%">
                 <div className="col-12 col-md-8 mb-3 w-100%">
                   <TeamList standings={data} title="Standings" />

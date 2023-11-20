@@ -1,8 +1,8 @@
 // resolvers.js file
-const { User, Team } = require('../models');
-const { signToken, AuthenticationError, myApiKey } = require('../utils/auth');
-// Import axios module
-const axios = require('axios');
+const { User, Team, Transfer, Comment} = require('../models');
+const { signToken, AuthenticationError } = require('../utils/auth');
+const Transfer = require('./models/Transfer'); 
+const Comment = require('./models/Comment'); 
 const resolvers = {
     Query: {
         users: async () => {
@@ -18,9 +18,9 @@ const resolvers = {
         team: async (parent, { teamId }) => {
             return Team.findOne({ _id: teamId });
         },
-        fetchTeam: async (_, __, context) => {
-
-        },
+        transfers: async (_, { teamId }) => {
+            return Team.findOne({ _id: teamId });
+          },
     },
     Mutation: {
         addUser: async (parent, { username, email, password }) => {
@@ -86,6 +86,45 @@ const resolvers = {
                 return user;
             } catch (error) {
                 throw new Error(`Failed to remove team: ${error.message}`);
+            }
+        },
+        addTransferComment: async (_, { transferId, commentText, commentAuthor }) => {
+            try {
+                const transfer = await Transfer.findById(transferId);
+
+                if (!transfer) {
+                    throw new UserInputError('Transfer not found');
+                }
+
+                const comment = new Comment({
+                    text: commentText,
+                    author: commentAuthor,
+                });
+
+                transfer.comments.push(comment);
+                await transfer.save();
+
+                return comment;
+            } catch (error) {
+                console.error(error);
+                throw new ApolloError('Internal server error');
+            }
+        },
+        deleteComment: async (_, { commentId }) => {
+            try {
+                const transfer = await Transfer.findOne({ 'comments._id': commentId });
+
+                if (!transfer) {
+                    throw new UserInputError('Transfer or Comment not found');
+                }
+
+                transfer.comments = transfer.comments.filter(comment => comment._id.toString() !== commentId);
+                await transfer.save();
+
+                return { _id: commentId }; // Return the deleted comment's ID
+            } catch (error) {
+                console.error(error);
+                throw new ApolloError('Internal server error');
             }
         },
     }

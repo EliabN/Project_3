@@ -8,7 +8,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Team from './pages/Team.jsx';
-//import Fixtures from './pages/Fixtures.jsx';
+import Transfers from './pages/Transfers';
 import ErrorPage from './pages/ErrorPage';
 
 // Create a BrowserRouter and define routes for your app
@@ -38,10 +38,10 @@ const router = createBrowserRouter([
         // Team component rendered for team details
         element: <Team />
       },
-      // {
-      //   path: '/fixtures/:id', 
-      //   element: <Fixtures /> 
-      // },
+      {
+        path: 'transfers/team/:id', 
+        element: <Transfers /> 
+      },
     ],
   },
 ]);
