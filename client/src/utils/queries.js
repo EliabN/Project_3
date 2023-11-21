@@ -38,3 +38,36 @@ export const QUERY_SINGLE_TEAM = gql`
     }
   }
 `;
+
+export const QUERY_SINGLE_TRANSFER = gql`
+  query getSingleTransfer($transferId: ID!) {
+    transfer(transferId: $transferId) {
+      _id
+      player {
+        name
+        position
+      }
+      transferDate
+      type
+      teamsIn {
+        _id
+        name
+        logo
+      }
+      teamsOut {
+        _id
+        name
+        logo
+      }
+    }
+  }
+`;
+
+
+export const QUERY_FETCH_STANDINGS = gql`
+  query fetchData {
+    fetchData {
+      data 
+    }
+  }
+`;

@@ -17,7 +17,6 @@ const typeDefs = `
 
     type Transfer {
         _id: ID!
-        player: Player!
         update: String!
         transfers: [TransferDetail!]!
         comments: [Comment!]!
@@ -39,6 +38,10 @@ const typeDefs = `
         name: String!
         logo: String!
       }
+
+      type FetchData {
+        data: [String]
+      }
       
       type Comment {
         _id: ID!
@@ -53,6 +56,7 @@ const typeDefs = `
         teams(username: String): [Team]
         team(teamId: ID!): Team
         transfers(teamId: ID!): [Transfer!]!
+        fetchData: FetchData
     }
 
     type Auth {

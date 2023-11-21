@@ -3,6 +3,7 @@
 import React from 'react';
 
 const Fixtures = ({ fixture }) => {
+    console.log(fixture)
     if (!fixture || !fixture.response || fixture.response.length === 0) {
         return <h3>No Fixtures Yet</h3>;
     }
@@ -56,7 +57,6 @@ const Fixtures = ({ fixture }) => {
 
             <div className="score-details">
                 <p>Halftime: {halftimeHome} - {halftimeAway}</p>
-                {/* Add more score details as needed */}
             </div>
         </div>
     );

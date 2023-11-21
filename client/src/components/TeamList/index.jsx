@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
+// TeamList.js
+// TeamList.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const TeamList = ({ standings, title }) => {
+const TeamList = ({ standings, title, isLoggedIn }) => {
   if (!standings.length) {
     return <h3>No Teams Yet</h3>;
   }
@@ -12,14 +14,11 @@ const TeamList = ({ standings, title }) => {
     <div className="layout-content-container">
       <div className="entity-body-content league teams">
         <div className="secondary-nav-content-container">
+        <h1>Standings</h1>
           <div className="entity-teams-list">
             <div className="entity-list-group">
-              {standings.map((teamStanding) => (
-                <Link
-                  to={`/teams/${teamStanding.team.id}`}
-                  key={teamStanding.team.id}
-                  className="entity-list-row-container image-logo"
-                >
+              {standings.slice(0, isLoggedIn ? standings.length : 5).map((teamStanding) => (
+                <div key={teamStanding.team.id} className="entity-list-row-container image-logo">
                   <div className="image-wrapper">
                     <img
                       src={teamStanding.team.logo}
@@ -30,13 +29,25 @@ const TeamList = ({ standings, title }) => {
                     />
                   </div>
                   <div className="entity-list-row-content">
-                    <h3 className="entity-list-row-title fs-18 lh-1">{teamStanding.team.name}</h3>
+                    {/* Render link only when logged in */}
+                    {isLoggedIn ? (
+                      <Link to={`/transfers/team/${teamStanding.team.id}`}>
+                        <h3 className="entity-list-row-title fs-18 lh-1">{teamStanding.team.name}</h3>
+                      </Link>
+                    ) : (
+                      <h3 className="entity-list-row-title fs-18 lh-1">{teamStanding.team.name}</h3>
+                    )}
                     <p>Points: {teamStanding.points}</p>
-                    <p>Goals Difference: {teamStanding.goalsDiff}</p>
-                    {/* Add more details as needed */}
+                    {isLoggedIn && (
+                      <>
+                        <p>Wins: {teamStanding.wins}</p>
+                        <p>Losses: {teamStanding.losses}</p>
+                        {/* Add more details as needed */}
+                      </>
+                    )}
                     <button className="image-button link-forward"></button>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           </div>

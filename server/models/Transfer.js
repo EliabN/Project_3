@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 
 const transferSchema = new mongoose.Schema({
   player: {
-    // Define player schema here
+    name: String,
+    position: String,
   },
   update: String,
   transfers: [

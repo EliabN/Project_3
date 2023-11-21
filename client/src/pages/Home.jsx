@@ -1,16 +1,12 @@
-// Home page
-// eslint-disable-next-line no-unused-vars
-import { useQuery } from '@apollo/client';
+// Home.js
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import TeamList from '../components/TeamList';
-import Fixtures from '../components/Fixtures';
-//import { API_KEY } from './secrets';
-
-// Now you can use API_KEY in this file
-//console.log(API_KEY);
+import Auth from '../utils/auth';
 
 const Home = () => {
   const [data, setData] = useState([]);
+  const [fixtures, setFixtures] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,12 +15,11 @@ const Home = () => {
           method: "GET",
           headers: {
             "x-rapidapi-host": "v3.football.api-sports.io",
-            "x-rapidapi-key": "93db411c7f7e2e844090f2a",
+            "x-rapidapi-key": '59c7214420bf3f1d9545cf2ea7c6', // TODO: Replace with actual key
           },
         });
 
         const result = await response.json();
-        console.log(result);
 
         if (result.response && result.response.length > 0) {
           setData(result.response[0].league.standings[0]);
@@ -37,25 +32,20 @@ const Home = () => {
     fetchData();
   }, []);
 
-  const [fixtures, setFixtures] = useState([]);
-
   useEffect(() => {
-    const leagueId = 61;
-    const season = 2019;
-
-    const fetchRounds = async () => {
+    const fetchFixtures = async (leagueId, season, round) => {
       try {
-        const response = await fetch(`https://v3.football.api-sports.io/fixtures?live=all`, {
+        const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=${leagueId}&season=${season}&round=${round}`, {
+          method: 'GET',
           headers: {
             'x-rapidapi-host': 'v3.football.api-sports.io',
-            'x-rapidapi-key': '93db411c7f7e2e844090f2a5ea7d=',
+            'x-rapidapi-key': '59c7214420bf3f1d9545cf2ea7c6', // TODO: Replace with actual key
           },
         });
 
         const result = await response.json();
-        console.log(result.response);
 
-        if (result.response && result.response.length > 0) {
+        if (result.response) {
           setFixtures(result.response);
         }
       } catch (error) {
@@ -63,8 +53,16 @@ const Home = () => {
       }
     };
 
-    fetchRounds();
+    // Example usage
+    const leagueId = 39;
+    const season = 2022;
+    const round = 10;
+    fetchFixtures(leagueId, season, round);
   }, []);
+
+  const handleLogout = () => {
+    Auth.logout();
+  };
 
   return (
     <main className="container-fluid">
@@ -74,60 +72,53 @@ const Home = () => {
           <div className="card bg-light-green rounded">
             <div className="card-body d-flex flex-column align-items-center justify-content-center">
               <div className="entity-header-wrapper">
-                <div className="entity-header nav-close">
-                  <div className="entity-logo-fav">
-                    <picture>
-                      <source
-                        srcSet="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.vresize.350.350.medium.0.png"
-                        media="(min-width: 1024px)"
-                      />
-                      <source
-                        srcSet="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.vresize.220.220.medium.0.png"
-                        media="(max-width: 1023px)"
-                      />
-                      <source
-                        srcSet="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.vresize.160.160.medium.0.png"
-                        media="(max-width: 767px)"
-                      />
-                      <img
-                        src="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.vresize.350.350.medium.0.png"
-                        alt="ENGLISH PREMIER LEAGUE"
-                        width="175"
-                        height="175"
-                        className="entity-card-logo image-logo"
-                      />
-                    </picture>
-                  </div>
-                  <div className="center flex entity-title">
-                    <div className="fs-40 fs-sm-30 cl-wht uc">ENGLISH PREMIER LEAGUE</div>
-                  </div>
-                  <div className="entity-header-divider"></div>
-                  <div className="mg-xl-t-7 mg-md-sm-t-5 ff-n fs-11 uc cl-wht">
-                    <span>NO MATCHES yesterday</span>
-                  </div>
-                  <div className="app-container">
-                    {fixtures.length > 0 ? (
-                      fixtures.map((fixture) => (
-                        <Fixtures key={fixture.fixture.id} fixture={fixture} />
-                      ))
-                    ) : (
-                      <h3>No Fixtures Yet</h3>
-                    )}
-                  </div>
-                  <div>
-                    <button
-                      data-favorite-uri="league:soccer/epl/league/1"
-                      data-action-location="entity header"
-                      data-favorite-text="FOLLOW"
-                      data-remove-text="FOLLOWING"
-                      aria-label="Follow Button"
-                      className="button-favorite entity pointer fs-14"
-                    >
-                      <span className="favorite-star"></span>{' '}
-                      <span className="favorite-text">FOLLOW</span>
-                    </button>
-                  </div>
+                <div className="entity-logo-fav">
+                  <picture>
+                    <source
+                      srcSet="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.vresize.350.350.medium.0.png"
+                      media="(min-width: 1024px)"
+                    />
+                    <source
+                      srcSet="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.vresize.220.220.medium.0.png"
+                      media="(max-width: 1023px)"
+                    />
+                    <source
+                      srcSet="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.vresize.160.160.medium.0.png"
+                      media="(max-width: 767px)"
+                    />
+                    <img
+                      src="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.vresize.350.350.medium.0.png"
+                      alt="ENGLISH PREMIER LEAGUE"
+                      width="175"
+                      height="175"
+                      className="entity-card-logo image-logo"
+                    />
+                  </picture>
                 </div>
+              </div>
+              <div className="app-container">
+                {fixtures.length > 0 ? (
+                  fixtures.map((fixture) => (
+                    <Fixtures key={fixture.fixture.id} fixture={fixture} />
+                  ))
+                ) : (
+                  <h3>No Fixtures Yet</h3>
+                )}
+              </div>
+              <div>
+                {Auth.loggedIn() ? (
+                  <>
+                    <button onClick={handleLogout} className="btn btn-danger">
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <p>
+                    To see fixtures, please{' '}
+                    <Link to="/login">login</Link> or{' '}
+                    <Link to="/signup">signup</Link>.
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -139,7 +130,7 @@ const Home = () => {
               {/* Right side content */}
               <div className="flex-row justify-left w-100%">
                 <div className="col-12 col-md-8 mb-3 w-100%">
-                  <TeamList standings={data} title="Standings" />
+                  <TeamList standings={data} title="Standings" isLoggedIn={Auth.loggedIn()} />
                 </div>
               </div>
             </div>

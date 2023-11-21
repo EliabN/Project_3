@@ -34,12 +34,12 @@ const router = createBrowserRouter([
       },
       {
         // Route for team details with ':id'
-        path: '/team/:id',
+        path: '/team',
         // Team component rendered for team details
         element: <Team />
       },
       {
-        path: 'transfers/team/:id', 
+        path: '/transfers/team/:id', 
         element: <Transfers /> 
       },
     ],

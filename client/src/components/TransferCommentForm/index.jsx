@@ -1,98 +1,96 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { ADD_TRANSFER_COMMENT, DELETE_COMMENT } from '../../utils/mutations'; 
+import { ADD_TRANSFER_COMMENT } from '../../utils/mutations';
+import { QUERY_SINGLE_TRANSFER } from '../../utils/queries';
 import Auth from '../../utils/auth';
 
-
 const TransferCommentForm = ({ transferId }) => {
-  const [addComment] = useMutation(ADD_TRANSFER_COMMENT);
-  const [deleteComment] = useMutation(DELETE_COMMENT);
+    console.log('test')
+    const [commentText, setCommentText] = useState('');
+    const [characterCount, setCharacterCount] = useState(0);
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
+    const [addTransferComment, { error }] = useMutation(ADD_TRANSFER_COMMENT, {
+        refetchQueries: [
+            { query: QUERY_SINGLE_TRANSFER, variables: { transferId } },
+        ],
+    });
 
-    try {
-      const { data } = await addComment({
-        variables: {
-          transferId,
-          commentText,
-          commentAuthor: Auth.getProfile().data.username,
-        },
-      });
+    const handleFormSubmit = async (event) => {
+        event.preventDefault();
 
-      setCommentText('');
-    } catch (err) {
-      console.error(err);
-    }
-  };
+        try {
+            await addTransferComment({
+                variables: {
+                    transferId,
+                    commentText,
+                    commentAuthor: Auth.getUser().data.username,
+                },
+            });
 
-  const [deleteComment] = useMutation(DELETE_COMMENT);
+            setCommentText('');
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
-  // ... rest of your component
+    const handleChange = (event) => {
+        const { value } = event.target;
 
-  const handleDeleteComment = async (commentId) => {
-    try {
-      await deleteComment({
-        variables: { commentId },
-      });
-      // Update state or refetch data as needed
-    } catch (error) {
-      console.error(error);
-    }
-  };
+        if (value.length <= 280) {
+            setCommentText(value);
+            setCharacterCount(value.length);
+        }
+    };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
+    return (
+        <div>
+            <h3>Add your comment</h3>
 
-    if (name === 'commentText' && value.length <= 280) {
-      setCommentText(value);
-      setCharacterCount(value.length);
-    }
-  };
+            {Auth.loggedIn() ? (
+                <>
+                    <p
+                        className={`m-0 ${characterCount === 280 || error ? 'text-danger' : ''
+                            }`}
+                    >
+                        Character Count: {characterCount}/280
+                    </p>
+                    <form
+                        className="flex-row justify-center justify-space-between-md align-center"
+                        onSubmit={handleFormSubmit}
+                    >
+                        <div className="col-12 col-lg-9">
+                            <textarea
+                                name="commentText"
+                                placeholder="Add your comment..."
+                                value={commentText}
+                                className="form-input w-100"
+                                style={{ lineHeight: '1.5', resize: 'vertical' }}
+                                onChange={handleChange}
+                            ></textarea>
+                        </div>
 
-  return (
-    <div>
-      <h4>What are your thoughts on this transfer?</h4>
-
-      {Auth.loggedIn() ? (
-        <>
-          <p
-            className={`m-0 ${
-              characterCount === 280 || error ? 'text-danger' : ''
-            }`}
-          >
-            Character Count: {characterCount}/280
-            {error && <span className="ml-2">{error.message}</span>}
-          </p>
-          <form
-            className="flex-row justify-center justify-space-between-md align-center"
-            onSubmit={handleFormSubmit}
-          >
-            <div className="col-12 col-lg-9">
-              <textarea
-                name="commentText"
-                placeholder="Add your comment..."
-                value={commentText}
-                className="form-input w-100"
-                style={{ lineHeight: '1.5', resize: 'vertical' }}
-                onChange={handleChange}
-              ></textarea>
-            </div>
-
-            <div className="col-12 col-lg-3">
-              <button className="btn btn-primary btn-block py-3" type="submit">
-                Add Comment
-              </button>
-            </div>
-          </form>
-        </>
-      ) : (
-        <p>
-          You need to be logged in to share your thoughts. Please{' '}
-          <Link to="/login">login</Link> or <Link to="/signup">signup.</Link>
-        </p>
-      )}
-    </div>
-  );
+                        <div className="col-12 col-lg-3">
+                            <button className="btn btn-primary btn-block py-3" type="submit">
+                                Add Comment
+                            </button>
+                        </div>
+                        {error && (
+                            <div className="col-12 my-3 bg-danger text-white p-3">
+                                {error.message}
+                            </div>
+                        )}
+                    </form>
+                </>
+            ) : (
+                <p>
+                    You need to be logged in to add comments. Please{' '}
+                    <Link to="/login">login</Link> or <Link to="/signup">signup.</Link>
+                </p>
+            )}
+        </div>
+    );
 };
 
 export default TransferCommentForm;

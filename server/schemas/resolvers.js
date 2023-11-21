@@ -1,8 +1,9 @@
 // resolvers.js file
-const { User, Team, Transfer, Comment} = require('../models');
+const { default: axios } = require('axios');
+const { User, Team, Transfer, Comment } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
-const Transfer = require('./models/Transfer'); 
-const Comment = require('./models/Comment'); 
+require('dotenv').config();
+const { MY_API_KEY } = process.env;
 const resolvers = {
     Query: {
         users: async () => {
@@ -20,7 +21,23 @@ const resolvers = {
         },
         transfers: async (_, { teamId }) => {
             return Team.findOne({ _id: teamId });
-          },
+        },
+        fetchData: async () => {
+            try {
+                const response = await axios.get("https://v3.football.api-sports.io/standings?league=39&season=2019", {
+                    method: "GET",
+                    headers: {
+                        "x-rapidapi-host": "v3.football.api-sports.io",
+                        "x-rapidapi-key": MY_API_KEY,
+                    },
+                });
+
+                return response.data
+            } catch (error) {
+                console.error(error.message);
+                throw new Error('Internal Server Error');
+            }
+        },
     },
     Mutation: {
         addUser: async (parent, { username, email, password }) => {
