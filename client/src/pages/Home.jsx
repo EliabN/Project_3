@@ -1,63 +1,32 @@
 // Home.js
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import TeamList from '../components/TeamList';
+import Fixtures from '../components/Fixtures';
 import Auth from '../utils/auth';
+import { fetchRound, fetchStandings, fetchFixtures } from '../utils/API';
 
 const Home = () => {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Set initial state to true
   const [fixtures, setFixtures] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://v3.football.api-sports.io/standings?league=39&season=2019", {
-          method: "GET",
-          headers: {
-            "x-rapidapi-host": "v3.football.api-sports.io",
-            "x-rapidapi-key": '59c7214420bf3f1d9545cf2ea7c6', // TODO: Replace with actual key
-          },
-        });
+        const teamStandings = await fetchStandings();
+        setData(teamStandings);
 
-        const result = await response.json();
-
-        if (result.response && result.response.length > 0) {
-          setData(result.response[0].league.standings[0]);
-        }
+        const teamFixtures = await fetchFixtures();
+        setFixtures(teamFixtures);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching data:', error);
+      } finally {
+        // Update isLoading state once data is fetched (whether successful or not)
+        setIsLoading(false);
       }
     };
 
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchFixtures = async (leagueId, season, round) => {
-      try {
-        const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=${leagueId}&season=${season}&round=${round}`, {
-          method: 'GET',
-          headers: {
-            'x-rapidapi-host': 'v3.football.api-sports.io',
-            'x-rapidapi-key': '59c7214420bf3f1d9545cf2ea7c6', // TODO: Replace with actual key
-          },
-        });
-
-        const result = await response.json();
-
-        if (result.response) {
-          setFixtures(result.response);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    // Example usage
-    const leagueId = 39;
-    const season = 2022;
-    const round = 10;
-    fetchFixtures(leagueId, season, round);
   }, []);
 
   const handleLogout = () => {
@@ -71,38 +40,21 @@ const Home = () => {
         <div className="col-md-8">
           <div className="card bg-light-green rounded">
             <div className="card-body d-flex flex-column align-items-center justify-content-center">
-              <div className="entity-header-wrapper">
-                <div className="entity-logo-fav">
-                  <picture>
-                    <source
-                      srcSet="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.vresize.350.350.medium.0.png"
-                      media="(min-width: 1024px)"
-                    />
-                    <source
-                      srcSet="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.vresize.220.220.medium.0.png"
-                      media="(max-width: 1023px)"
-                    />
-                    <source
-                      srcSet="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.vresize.160.160.medium.0.png"
-                      media="(max-width: 767px)"
-                    />
-                    <img
-                      src="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.vresize.350.350.medium.0.png"
-                      alt="ENGLISH PREMIER LEAGUE"
-                      width="175"
-                      height="175"
-                      className="entity-card-logo image-logo"
-                    />
-                  </picture>
-                </div>
-              </div>
-              <div className="app-container">
-                {fixtures.length > 0 ? (
-                  fixtures.map((fixture) => (
-                    <Fixtures key={fixture.fixture.id} fixture={fixture} />
-                  ))
+              <div className="app-container center">
+                <h3>Upcoming Matches:</h3>
+                {isLoading ? (
+                  <p>Loading...</p>
                 ) : (
-                  <h3>No Fixtures Yet</h3>
+                  <React.Fragment>
+                    <h4>Round: {fixtures[0].league.round}</h4>
+                    {fixtures.length > 0 ? (
+                      fixtures.map((fixture) => (
+                        <Fixtures key={fixture.fixture.id} fixture={fixture} />
+                      ))
+                    ) : (
+                      <h3>No Fixtures Yet</h3>
+                    )}
+                  </React.Fragment>
                 )}
               </div>
               <div>
@@ -129,9 +81,9 @@ const Home = () => {
             <div className="card-body">
               {/* Right side content */}
               <div className="flex-row justify-left w-100%">
-                <div className="col-12 col-md-8 mb-3 w-100%">
+                {/* <div className="col-12 col-md-8 mb-3 w-100%">
                   <TeamList standings={data} title="Standings" isLoggedIn={Auth.loggedIn()} />
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

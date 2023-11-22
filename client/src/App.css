@@ -1777,3 +1777,45 @@ label form [type='radio'] {
 .btn-medium {
   padding: 0.375rem 0.75rem; /* Adjust padding as needed */
 }
+
+
+/* Fixtures.jsx CSS file */
+
+.fixture-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.fixture-details,
+.league-details,
+.team-details,
+.score-details {
+  margin-bottom: 10px;
+}
+
+.league-logo,
+.team-logo {
+  max-width: 50px; /* Adjust as needed */
+}
+
+.versus {
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0 10px;
+}
+
+.team-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.team {
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}

@@ -1,5 +1,4 @@
 // resolvers.js file
-const { default: axios } = require('axios');
 const { User, Team, Transfer, Comment } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
 require('dotenv').config();
@@ -24,7 +23,7 @@ const resolvers = {
         },
         fetchData: async () => {
             try {
-                const response = await axios.get("https://v3.football.api-sports.io/standings?league=39&season=2019", {
+                const response = await axios("https://v3.football.api-sports.io/standings?league=39&season=2019", {
                     method: "GET",
                     headers: {
                         "x-rapidapi-host": "v3.football.api-sports.io",

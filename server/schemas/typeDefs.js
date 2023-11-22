@@ -40,7 +40,7 @@ const typeDefs = `
       }
 
       type FetchData {
-        data: [String]
+        data: String
       }
       
       type Comment {
