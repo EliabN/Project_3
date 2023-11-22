@@ -14,12 +14,12 @@ const Transfers = () => {
           method: 'GET',
           headers: {
             'x-rapidapi-host': 'v3.football.api-sports.io',
-            'x-rapidapi-key': '59c7214420bf3f1d9545cf2ea7c6', // TODO: Replace with actual key
+            'x-rapidapi-key': '59c7214420bf3f1d9545cf2ea', // TODO: Replace with actual 
           },
         });
-  
+
         const result = await response.json();
-  
+
         if (result.response && result.response.length > 0) {
           setTransfers(result.response);
           console.log('Return Data', result);
@@ -28,7 +28,7 @@ const Transfers = () => {
         console.error('Error fetching transfer details:', error);
       }
     };
-  
+
     // Call the fetch function
     fetchTransferDetails();
   }, [id]);

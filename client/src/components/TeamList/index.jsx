@@ -5,8 +5,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const TeamList = ({ standings, isLoggedIn }) => {
-  if (!standings.length) {
+const TeamList = ({ standings, title, isLoggedIn }) => {
+  // Check if standings is undefined or null before accessing its length
+  if (!standings) {
     return <h3>No Teams Yet</h3>;
   }
 

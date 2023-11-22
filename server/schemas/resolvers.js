@@ -2,6 +2,7 @@
 const { User, Team, Transfer, Comment } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
 require('dotenv').config();
+
 const { MY_API_KEY } = process.env;
 const resolvers = {
     Query: {

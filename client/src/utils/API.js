@@ -2,6 +2,7 @@
 // Import API key
 // import dotenv from 'dotenv';
 // dotenv.config();
+// const apiKey = process.env.API_KEY;
 // // Now you can use API_KEY in this file
 // console.log(API_KEY);
 
@@ -13,12 +14,12 @@ const fetchStandings = async () => {
       method: "GET",
       headers: {
         "x-rapidapi-host": "v3.football.api-sports.io",
-        "x-rapidapi-key": '59c7214420bf3f1d9545cf2ea7c6eb',
+        "x-rapidapi-key": '59c7214420bf3f1d9545cf2ea7c6e',
       },
     });
 
     const result = await response.json();
-
+    console.log(result);
     if (result.response && result.response.length > 0) {
       return result.response[0].league.standings[0];
     }
@@ -32,7 +33,7 @@ const fetchRound = async () => {
     method: "GET",
     headers: {
       "x-rapidapi-host": "v3.football.api-sports.io",
-      "x-rapidapi-key": "59c7214420bf3f1d9545cf2ea7c6eb",  // Replace with your actual API key
+      "x-rapidapi-key": "59c7214420bf3f1d9545cf2ea7c6e",  // Replace with your actual API key
     },
   });
 
@@ -54,18 +55,18 @@ const fetchFixtures = async () => {
   // Fetch current round
   // const round = await fetchRound(); //TODO: Uncomment later
   // console.log(round);
-  const round = 20
+  const round = 25
   try {
     const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=39&season=2023&round=Regular%20Season%20-%20${round}&status=NS`, {
       method: 'GET',
       headers: {
         'x-rapidapi-host': 'v3.football.api-sports.io',
-        'x-rapidapi-key': '59c7214420bf3f1d9545cf2ea7c6eb31', // TODO: Replace with actual key
+        'x-rapidapi-key': '59c7214420bf3f1d9545cf2ea7c', // TODO: Replace with actual key
       },
     });
 
     const result = await response.json();
-    console.log(result);
+    //console.log(result);
     if (result.response) {
       return (result.response);
     }
