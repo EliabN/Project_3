@@ -137,7 +137,7 @@ body {
   }
   
   /* Media query for smaller screens */
-  @media (max-width: 768px) {
+  @media (max-width: 896px) {
     /* For smaller screens */
     .d-flex.align-items-center {
       /* Stack elements vertically on smaller screens */
@@ -156,7 +156,7 @@ body {
   
     .btn {
       margin: 5px 0; /* Add space between buttons on smaller screens */
-      width: 100%; /* Make buttons full-width on smaller screens */
+      width: 100%; 
     }
   
     /* Hide the welcome message on smaller screens */

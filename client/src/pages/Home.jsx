@@ -36,7 +36,7 @@ const Home = () => {
   };
 
   return (
-    <main className="container-fluid">
+    <main className="container-fluid main-container">
       <div className="row">
         {/* Left Sidebar */}
         <div className="col-md-8">

@@ -71,40 +71,6 @@ const resolvers = {
             // Return an `Auth` with signed token and user's info
             return { token, user };
         },
-        addTeam: async (_, { userId, teamId }) => {
-            try {
-                const user = await User.findOneAndUpdate(
-                    { _id: userId },
-                    { $addToSet: { teams: teamId } },
-                    { new: true }
-                ).populate('teams');
-
-                if (!user) {
-                    throw new Error('User not found');
-                }
-
-                return user;
-            } catch (error) {
-                throw new Error(`Failed to add team: ${error.message}`);
-            }
-        },
-        removeTeam: async (parent, { userId, teamId }) => {
-            try {
-                const user = await User.findOneAndUpdate(
-                    { _id: userId },
-                    { $pull: { teams: teamId } },
-                    { new: true }
-                );
-
-                if (!user) {
-                    throw new Error('User not found');
-                }
-
-                return user;
-            } catch (error) {
-                throw new Error(`Failed to remove team: ${error.message}`);
-            }
-        },
         addTransferComment: async (_, { transferId, commentText, commentAuthor }) => {
             try {
                 const transfer = await Transfer.findById(transferId);

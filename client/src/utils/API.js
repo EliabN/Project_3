@@ -10,11 +10,11 @@
 
 const fetchStandings = async () => {
   try {
-    const response = await fetch("https://v3.football.api-sports.io/standings?league=39&season=2019", {
+    const response = await fetch("https://v3.football.api-sports.io/standings?league=39&season=2023", {
       method: "GET",
       headers: {
         "x-rapidapi-host": "v3.football.api-sports.io",
-        "x-rapidapi-key": '59c7214420bf3f1d9545cf2ea7c6e',
+        "x-rapidapi-key": '59c7214420bf3f1d9545cf2ea7c',
       },
     });
 

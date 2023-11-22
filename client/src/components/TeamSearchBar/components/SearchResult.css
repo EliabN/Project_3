@@ -10,14 +10,20 @@
     position: relative;
   }
 
-  .search-result .p {
-    margin-top: 0.2rem;
+  .search-result p {
+    margin-top: 0.2rem !important; 
     margin-bottom: 0.2rem;
   }
 
   .favorite-btn {
     position: absolute;
-    right: +15px;
+    right: +20px;
     background-color: white;
     color: MI#29ABE0;
+  }
+
+  @media (max-width: 896px) {
+    .favorite-btn {
+      width: auto; 
     }
+  }
