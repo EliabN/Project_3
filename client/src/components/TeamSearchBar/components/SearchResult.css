@@ -1,0 +1,29 @@
+.search-result:hover {
+    background-color: rgb(95, 249, 121);
+  }
+
+  .search-result {
+    display: flex;
+    justify-content: space-between; /* Align items horizontally with space between */
+    align-items: center; /* Align items vertically in the center */
+    padding: 10px 20px;
+    position: relative;
+  }
+
+  .search-result p {
+    margin-top: 0.2rem !important; 
+    margin-bottom: 0.2rem;
+  }
+
+  .favorite-btn {
+    position: absolute;
+    right: +20px;
+    background-color: white;
+    color: MI#29ABE0;
+  }
+
+  @media (max-width: 896px) {
+    .favorite-btn {
+      width: auto; 
+    }
+  }

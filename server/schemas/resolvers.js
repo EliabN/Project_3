@@ -1,7 +1,9 @@
 // resolvers.js file
-const { User } = require('../models');
+const { User, Team, Transfer, Comment } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
+require('dotenv').config();
 
+const { MY_API_KEY } = process.env;
 const resolvers = {
     Query: {
         users: async () => {
@@ -9,9 +11,35 @@ const resolvers = {
         },
         user: async (parent, { username }) => {
             return User.findOne({ username }).populate('teams');
-        }
-    },
+        },
+        teams: async (_, { username }) => {
+            const params = username ? { username } : {};
+            return Team.find(params).sort({ createdAt: -1 });
+        },
 
+        team: async (_, { teamId }) => {
+            return Team.findById(teamId);
+        },
+        transfers: async (_, { teamId }) => {
+            return Team.findOne({ _id: teamId });
+        },
+        fetchData: async () => {
+            try {
+                const response = await axios("https://v3.football.api-sports.io/standings?league=39&season=2019", {
+                    method: "GET",
+                    headers: {
+                        "x-rapidapi-host": "v3.football.api-sports.io",
+                        "x-rapidapi-key": MY_API_KEY,
+                    },
+                });
+
+                return response.data
+            } catch (error) {
+                console.error(error.message);
+                throw new Error('Internal Server Error');
+            }
+        },
+    },
     Mutation: {
         addUser: async (parent, { username, email, password }) => {
             // Create the user
@@ -44,41 +72,77 @@ const resolvers = {
             // Return an `Auth` with signed token and user's info
             return { token, user };
         },
-        addTeam: async (_, { userId, teamId }) => {
+        addComment: async (_, { transferId, commentText, commentAuthor }) => {
             try {
-              const user = await User.findOneAndUpdate(
-                { _id: userId },
-                { $addToSet: { teams: teamId } },
-                { new: true }
-              ).populate('teams');
-          
-              if (!user) {
-                throw new Error('User not found');
-              }
-          
-              return user;
+                const transfer = await Transfer.findById(transferId);
+
+                if (!transfer) {
+                    throw new UserInputError('Transfer not found');
+                }
+
+                const comment = new Comment({
+                    text: commentText,
+                    author: commentAuthor,
+                });
+
+                transfer.comments.push(comment);
+                await transfer.save();
+
+                return comment;
             } catch (error) {
-              throw new Error(`Failed to add team: ${error.message}`);
+                console.error(error);
+                throw new ApolloError('Internal server error');
             }
-          },
-        removeTeam: async (parent, { userId, teamId }) => {
+        },
+        deleteComment: async (_, { commentId }) => {
             try {
-                const user = await User.findOneAndUpdate(
-                    { _id: userId },
-                    { $pull: { teams: teamId } },
+                const transfer = await Transfer.findOne({ 'comments._id': commentId });
+
+                if (!transfer) {
+                    throw new UserInputError('Transfer or Comment not found');
+                }
+
+                transfer.comments = transfer.comments.filter(comment => comment._id.toString() !== commentId);
+                await transfer.save();
+
+                return { _id: commentId }; // Return the deleted comment's ID
+            } catch (error) {
+                console.error(error);
+                throw new ApolloError('Internal server error');
+            }
+        },
+        saveFavTeam: async (parent, { teamInput }, { user, res }) => {
+            console.log(user)
+            try {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: user._id },
+                    { $addToSet: { savedTeams: teamInput } },
+                    { new: true, runValidators: true }
+                );
+
+                return updatedUser;
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        removeFavTeam: async (parent, { teamId }, { user, res }) => {
+            try {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: user._id },
+                    { $pull: { savedTeams: { teamId } } },
                     { new: true }
                 );
 
-                if (!user) {
-                    throw new Error('User not found');
+                if (!updatedUser) {
+                    throw new Error("Couldn't find user with this ID!");
                 }
 
-                return user;
-            } catch (error) {
-                throw new Error(`Failed to remove team: ${error.message}`);
+                return updatedUser;
+            } catch (err) {
+                console.log(err);
             }
         },
-    }
+    },
 };
 
 module.exports = resolvers;
