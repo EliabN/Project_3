@@ -1,1 +1,1 @@
-web node server/server.js --ignore client
+web concurrently \"cd server && npm run watch\" \"cd client && npm run dev\"
