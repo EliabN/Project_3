@@ -1,23 +1,44 @@
-// typeDefs.js file
 const typeDefs = `
     type User {
         _id: ID
         username: String
         email: String
         password: String
-        teams: [Team]!
+        favoriteTeams: [Team]!
     }
 
     type Team {
-        _id: ID
-        name: String!
-        league: String!
-        coach: String
+        _id: ID!
+        name: String
     }
-    
+
+    input TeamInput {
+        _id: ID!
+        name: String!
+    }
+
+    type Transfer {
+        _id: ID!
+    }
+
+    type FetchData {
+        data: String
+    }
+
+    type Comment {
+        _id: ID!
+        text: String!
+        author: String!
+        createdAt: String!
+    }
+
     type Query {
         users: [User]
         user(username: String!): User
+        teams(username: String): [Team]
+        team(teamId: ID!): Team
+        transfers(teamId: ID!): [Transfer!]!
+        fetchData: FetchData
     }
 
     type Auth {
@@ -28,10 +49,11 @@ const typeDefs = `
     type Mutation {
         addUser(username: String!, email: String!, password: String!): Auth
         login(email: String!, password: String!): Auth
-        addTeam(userId: ID!, teamId: ID!): User
-        removeTeam(userId: ID!, teamId: ID!): User
+        addComment(transferId: ID!, commentText: String!, commentAuthor: String!): Comment!
+        deleteComment(commentId: ID!): Comment!
+        saveFavTeam(teamInput: TeamInput!): User
+        removeFavTeam(teamId: String!): User
     }
 `;
-//players: [Player]
 
 module.exports = typeDefs;

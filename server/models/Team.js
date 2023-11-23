@@ -8,19 +8,18 @@ const teamSchema = new Schema({
     unique: true,
     trim: true,
   },
-  league: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  coach: {
-    type: String,
-    trim: true,
-  },
-  trophies: {
-    type: Number,
-    default: 0,
-  },
+//  TODO: add later
+  // league: {
+  //   type: String,
+  //   required: true,
+  //   trim: true,
+  // },
+  // venue: {
+  //   type: String,
+  //   trim: true,
+  // },
+
+//  Add later create Schema
 //   players: [
 //     {
 //       type: Schema.Types.ObjectId,
