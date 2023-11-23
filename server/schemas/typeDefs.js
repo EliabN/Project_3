@@ -1,31 +1,42 @@
-// typeDefs.js file
 const typeDefs = `
     type User {
         _id: ID
         username: String
         email: String
         password: String
-        teams: [Team]!
+        favoriteTeams: [Team]!
+    }
+
+    type Team {
+        _id: ID!
+        name: String
+    }
+
+    input TeamInput {
+        _id: ID!
+        name: String!
     }
 
     type Transfer {
         _id: ID!
-      }
+    }
 
-      type FetchData {
+    type FetchData {
         data: String
-      }
-      
-      type Comment {
+    }
+
+    type Comment {
         _id: ID!
         text: String!
         author: String!
         createdAt: String!
-      }
+    }
 
     type Query {
         users: [User]
         user(username: String!): User
+        teams(username: String): [Team]
+        team(teamId: ID!): Team
         transfers(teamId: ID!): [Transfer!]!
         fetchData: FetchData
     }
@@ -40,6 +51,8 @@ const typeDefs = `
         login(email: String!, password: String!): Auth
         addComment(transferId: ID!, commentText: String!, commentAuthor: String!): Comment!
         deleteComment(commentId: ID!): Comment!
+        saveFavTeam(teamInput: TeamInput!): User
+        removeFavTeam(teamId: String!): User
     }
 `;
 

@@ -3,14 +3,18 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Fixtures from '../components/Fixtures';
 import TeamList from '../components/TeamList';
+import Favorite from '../components/Favorite';
 import TeamSearchBar from '../components/TeamSearchBar/TeamSearchBar';
 import Auth from '../utils/auth';
 import { fetchRound, fetchStandings, fetchFixtures } from '../utils/API';
 
 const Home = () => {
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Set initial state to true
+  const [isLoading, setIsLoading] = useState(true);
   const [fixtures, setFixtures] = useState([]);
+  // Check if the user has more than one favorite team
+  const hasMultipleFavoriteTeams = true
+  //Auth.loggedIn() && data.favoriteTeams.length > 1;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +27,6 @@ const Home = () => {
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
-        // Update isLoading state once data is fetched (whether successful or not)
         setIsLoading(false);
       }
     };
@@ -40,7 +43,7 @@ const Home = () => {
       <div className="row">
         {/* Left Sidebar */}
         <div className="col-md-8">
-          <div className="card bg-light-green rounded">
+          <div className="card bg-light-green mb-4 rounded">
             <div className="card-body d-flex flex-column align-items-center justify-content-center">
               <div className="entity-header-wrapper">
                 <div className="entity-logo-fav">
@@ -102,20 +105,39 @@ const Home = () => {
             </div>
           </div>
         </div>
+        <br />
+        <br />
         {/* Main Content */}
-
+         {/* Right side content */}
         <div className="col-md-4">
-          <div className="card bg-light-green">
-            <div className="card-body">
-              {/* Right side content */}
-              <div className="flex-row justify-left w-100%">
-                <TeamSearchBar allTeams={data} title="SearchBar" isLoggedIn={Auth.loggedIn()} />
+          {Auth.loggedIn() && (
+            <>
+              <div className="card bg-light-green">
+                <div className="card-body">
+                  <div className="flex-row justify-left w-100%">
+                    <TeamSearchBar allTeams={data} title="SearchBar" isLoggedIn={Auth.loggedIn()} />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+              <br />
+              {hasMultipleFavoriteTeams && (
+                <div className="card bg-light-green">
+                  <div className="card-body">
+                    <div className="flex-row justify-left w-100%">
+                      {/* {data.favoriteTeams.map((favoriteTeam) => (
+                        <div className="flex-row justify-left w-100%" key={favoriteTeam.team.id}>
+                          <Favorite teamId={favoriteTeam.team.id} />
+                        </div>
+                      ))} */}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+          <br />
           <div className="card bg-light-green">
             <div className="card-body">
-              {/* Right side content */}
               <div className="flex-row justify-left w-100%">
                 <div className="col-12 col-md-8 mb-3 w-100%">
                   {/* <TeamList standings={data} title="Standings" isLoggedIn={Auth.loggedIn()} /> */}

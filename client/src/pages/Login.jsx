@@ -22,17 +22,25 @@ const Login = (props) => {
   // submit form
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log(formState);
+
+  
     try {
-      const { data } = await login({
+      const response = await login({
         variables: { ...formState },
       });
-
-      Auth.login(data.login.token);
+  
+      const responseData = response.data;
+  
+      if (responseData.login) {
+        Auth.login(responseData.login.token);
+      } else {
+        // Handle login error
+        console.error("Login failed. Check credentials or try again.");
+      }
     } catch (e) {
       console.error(e);
     }
-
+  
     // clear form values
     setFormState({
       email: '',

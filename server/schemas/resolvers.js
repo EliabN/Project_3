@@ -12,12 +12,13 @@ const resolvers = {
         user: async (parent, { username }) => {
             return User.findOne({ username }).populate('teams');
         },
-        teams: async (parent, { username }) => {
+        teams: async (_, { username }) => {
             const params = username ? { username } : {};
             return Team.find(params).sort({ createdAt: -1 });
         },
-        team: async (parent, { teamId }) => {
-            return Team.findOne({ _id: teamId });
+
+        team: async (_, { teamId }) => {
+            return Team.findById(teamId);
         },
         transfers: async (_, { teamId }) => {
             return Team.findOne({ _id: teamId });
@@ -71,7 +72,7 @@ const resolvers = {
             // Return an `Auth` with signed token and user's info
             return { token, user };
         },
-        addTransferComment: async (_, { transferId, commentText, commentAuthor }) => {
+        addComment: async (_, { transferId, commentText, commentAuthor }) => {
             try {
                 const transfer = await Transfer.findById(transferId);
 
@@ -110,7 +111,38 @@ const resolvers = {
                 throw new ApolloError('Internal server error');
             }
         },
-    }
+        saveFavTeam: async (parent, { teamInput }, { user, res }) => {
+            console.log(user)
+            try {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: user._id },
+                    { $addToSet: { savedTeams: teamInput } },
+                    { new: true, runValidators: true }
+                );
+
+                return updatedUser;
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        removeFavTeam: async (parent, { teamId }, { user, res }) => {
+            try {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: user._id },
+                    { $pull: { savedTeams: { teamId } } },
+                    { new: true }
+                );
+
+                if (!updatedUser) {
+                    throw new Error("Couldn't find user with this ID!");
+                }
+
+                return updatedUser;
+            } catch (err) {
+                console.log(err);
+            }
+        },
+    },
 };
 
 module.exports = resolvers;

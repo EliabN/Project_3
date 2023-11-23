@@ -41,22 +41,6 @@ export const ADD_TEAM = gql`
   }
 `;
 
-export const REMOVE_TEAM = gql`
-  mutation removeTeam($userId: ID!, $teamId: ID!) {
-    removeTeam(userId: $userId, teamId: $teamId) {
-      _id
-      username
-      email
-      teams {
-        _id
-        name
-        league
-        coach
-      }
-    }
-  }
-`;
-
 export const ADD_TRANSFER_COMMENT = gql`
   mutation addTransferComment($transferId: ID!, $commentText: String!, $commentAuthor: String!) {
     addTransferComment(transferId: $transferId, commentText: $commentText, commentAuthor: $commentAuthor) {
@@ -68,9 +52,26 @@ export const ADD_TRANSFER_COMMENT = gql`
   }
 `;
 
-export const DELETE_COMMENT = gql`
-  mutation deleteComment($commentId: ID!) {
-    deleteComment(commentId: $commentId) {
+export const ADD_TO_FAVORITES = gql`
+  mutation addToFavorites($teamId: ID!) {
+    addToFavorites(teamId: $teamId) {
+      _id
+      favorites
+    }
+  }
+`;
+
+export const ADD_FAV_TEAM = gql`
+  mutation saveTeam($teamData: teamInput!) {
+    saveTeam(teamData: $teamData) {
+      _id
+    }
+  }
+`;
+
+export const REMOVE_FAV_TEAM = gql`
+  mutation removeTeam($teamId: ID!) {
+    removeTeam(teamId: $teamId) {
       _id
     }
   }

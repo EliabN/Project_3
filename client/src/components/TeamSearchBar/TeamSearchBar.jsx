@@ -8,7 +8,7 @@ import { SearchResultsList } from "./components/SearchResultsList";
 function TeamSearchBar({ allTeams }) {
   const [results, setResults] = useState([]);
   const [input, setInput] = useState("");
-  console.log(allTeams);
+
 
   const fetchData = async (value) => {
     try {
@@ -26,6 +26,7 @@ function TeamSearchBar({ allTeams }) {
         });
 
         setResults(filteredResults);
+
       } else {
         console.error("Invalid data format:", teamStandings);
       }
